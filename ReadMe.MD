@@ -1,5 +1,8 @@
+
+![ec2-volume-snapshots](ec2-volume-snapshots.png)
+
 Backup of volume -> Snapshot
- - Delete EC2 instance if it is not needed any more and forgot to delete volumes and snaphots
+ - Delete EC2 instance if it is not needed anymore and forgot to delete volumes and snaphots
 
  S3 buckets. Then if you don't need those bucket if you forgot to delete them.
 
