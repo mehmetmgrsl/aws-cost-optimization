@@ -1,14 +1,26 @@
 
 ![ec2-volume-snapshots](ec2-volume-snapshots.png)
 
-Backup of volume -> Snapshot
- - Delete EC2 instance if it is not needed anymore and forgot to delete volumes and snaphots
+- Backup of volume -> Snapshot
 
- S3 buckets. Then if you don't need those bucket if you forgot to delete them.
 
- EKS cluster to test sth but forgot to delete it.
+- Extra costs you may face if you're not careful:
 
- Stale resources. Created but forgot to delete it.
+  - S3 buckets: Unused or forgotten buckets with data can add up in cost.
+
+  - EKS clusters: Unused test clusters left running will charge for control plane and nodes.
+
+  - Stale resources: Unused volumes, snapshots, or IPs can silently increase your bill.
+
+
+-  Run cleanup script
+  - ```python cost-opt-ebs-stale-snapshots.py```
+
+- Verify if any unused resources remain
+  - List unattached EBS volumes
+    - ```aws ec2 describe-volumes --filters Name=status,Values=available --query "Volumes[*].[VolumeId,Size]" --output table```
+  - List your EBS snapshots
+    - ```aws ec2 describe-snapshots --owner-ids self --query "Snapshots[*].[SnapshotId,VolumeId,StartTime,State]" --output table```
 
 ----------------------
 If any stale resources are detected, the DevOps Engineer can receive notifications, such as:
